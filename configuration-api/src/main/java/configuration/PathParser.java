@@ -35,7 +35,7 @@ public class PathParser {
         List<Key> keys = new ArrayList<>();
         List<Integer> indexs = new ArrayList<>();
         StringBuilder name = new StringBuilder();
-        int index = 0;
+        int index = -1;
         boolean inIndex = false;
 
         for (char c : path.toCharArray()) {
@@ -44,15 +44,18 @@ public class PathParser {
                 name = new StringBuilder();
                 indexs.clear();
             } else if (c == arrayLeft) {
-                index = 0;
                 inIndex = true;
             } else if (c == arrayRight) {
                 indexs.add(index);
                 inIndex = false;
+                index = -1;
             } else {
                 if (inIndex) {
                     if ("0123456789".indexOf(c) == -1) {
                         throw new InvalidPathException(path);
+                    }
+                    if (index < 0) {
+                        index = 0;
                     }
                     index = index * 10 + c - '0';
                 } else {

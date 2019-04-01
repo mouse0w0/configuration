@@ -91,7 +91,7 @@ public class ConfigNode {
             for (int i = 0; i < indexs.length; i++) {
                 if (!(value instanceof List))
                     return null;
-                value = ((List<Object>) value).get(i);
+                value = ((List<Object>) value).get(indexs[i]);
             }
             return value;
         } else {
@@ -101,34 +101,8 @@ public class ConfigNode {
 
     protected Object setInternal(PathParser.Key key, Object value) {
         if (key.isList()) {
-            Supplier<List<Object>> listFactory = config.getOptions().getListFactory();
-
-            List<Object> list = getListInternal(key.getName());
-            int[] indexs = key.getIndexs();
-            for (int i = 0; i < indexs.length - 1; i++) {
-                Object childList = list.get(indexs[i]);
-                if (childList instanceof List) {
-                    list = (List<Object>) childList;
-                } else {
-                    List<Object> childList2 = config.getOptions().getListFactory().get();
-                    list.set(indexs[i], childList2);
-                    list = childList2;
-                }
-            }
-            return list.get(indexs[indexs.length - 1]);
-        } else {
-            return map.put(key.getName(), value);
+            throw new UnsupportedOperationException();
         }
-    }
-
-    protected List<Object> getListInternal(String key) {
-        Object listObj = map.get(key);
-        if (listObj instanceof List) {
-            return (List<Object>) listObj;
-        } else {
-            List<Object> list = config.getOptions().getListFactory().get();
-            map.put(key, list);
-            return list;
-        }
+        return value == null ? map.remove(key.getName()) : map.put(key.getName(), value);
     }
 }
