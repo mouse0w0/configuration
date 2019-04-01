@@ -91,7 +91,10 @@ public class ConfigNode {
             for (int i = 0; i < indexs.length; i++) {
                 if (!(value instanceof List))
                     return null;
-                value = ((List<Object>) value).get(indexs[i]);
+                int index = indexs[i];
+                if (index >= ((List) value).size())
+                    return null;
+                value = ((List) value).get(index);
             }
             return value;
         } else {
