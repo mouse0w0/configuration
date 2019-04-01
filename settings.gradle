@@ -1,0 +1,5 @@
+rootProject.name = 'configuration'
+include 'configuration-api'
+include 'configuration-gson'
+include 'configuration-toml4j'
+

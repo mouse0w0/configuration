@@ -1,0 +1,24 @@
+group 'configuration'
+version '1.0.0'
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    group 'configuration'
+    version '1.0.0'
+
+    sourceCompatibility = targetCompatibility = 1.8
+
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.1'
+        testCompile 'org.junit-pioneer:junit-pioneer:0.3.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.1'
+    }
+}
