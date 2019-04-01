@@ -13,7 +13,7 @@ public class Config {
 
     public Config(ConfigOptions options) {
         this.options = options;
-        this.root = new ConfigNode(this);
+        this.root = new ConfigNode(options);
     }
 
     public Object get(String path) {

@@ -4,22 +4,17 @@ import configuration.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class ConfigNode {
 
-    private final Config config;
+    private final ConfigOptions options;
 
     private final Map<String, Object> map;
 
-    public ConfigNode(Config config) {
-        this.config = Objects.requireNonNull(config);
-        this.map = config.getOptions().getMapFactory().get();
-    }
-
-    public Config getConfig() {
-        return config;
+    public ConfigNode(ConfigOptions options) {
+        this.options = options;
+        this.map = options.getMapFactory().get();
     }
 
     public Object get(String path) {
@@ -27,7 +22,7 @@ public class ConfigNode {
             return this;
         }
 
-        PathParser.Key[] keys = PathParser.parse(path, config.getOptions());
+        PathParser.Key[] keys = PathParser.parse(path, options);
 
         ConfigNode node = this;
         for (int i = 0; i < keys.length - 1; i++) {
@@ -51,7 +46,7 @@ public class ConfigNode {
     }
 
     public Object set(String path, Object value) {
-        PathParser.Key[] keys = PathParser.parse(path, config.getOptions());
+        PathParser.Key[] keys = PathParser.parse(path, options);
 
         if (keys.length == 1) {
             return setInternal(keys[0], value);
@@ -79,7 +74,7 @@ public class ConfigNode {
     }
 
     protected ConfigNode createNodeInternal(PathParser.Key key) {
-        ConfigNode node = new ConfigNode(config);
+        ConfigNode node = new ConfigNode(options);
         setInternal(key, node);
         return node;
     }
