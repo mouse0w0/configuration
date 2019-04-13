@@ -47,6 +47,21 @@ public class Config {
         return value != null ? value : defaultValue.get();
     }
 
+    public <T> T get(String path, Class<T> type) {
+        Object o = get(path);
+        return o != null ? options.deserialize(type, o) : null;
+    }
+
+    public <T> T get(String path, Class<T> type, T defaultValue) {
+        Object o = get(path);
+        return o != null ? options.deserialize(type, o) : defaultValue;
+    }
+
+    public <T> T get(String path, Class<T> type, Supplier<T> defaultValue) {
+        Object o = get(path);
+        return o != null ? options.deserialize(type, o) : defaultValue.get();
+    }
+
     public Object set(String path, Object value) {
         String[] keys = PathParser.parse(path, options);
 
@@ -64,7 +79,7 @@ public class Config {
             map = (Map<String, Object>) child;
         }
 
-        return value == null ? map.remove(keys[keys.length - 1]) : map.put(keys[keys.length - 1], value);
+        return value == null ? map.remove(keys[keys.length - 1]) : map.put(keys[keys.length - 1], options.serialize(value));
     }
 
     public boolean has(String path) {
