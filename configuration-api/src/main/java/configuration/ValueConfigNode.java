@@ -4,6 +4,8 @@ import configuration.util.StringUtils;
 
 public class ValueConfigNode extends ConfigNode {
 
+    public static final ValueConfigNode NULL = new ValueConfigNode(null, null);
+
     private final Object value;
 
     public ValueConfigNode(ConfigOptions options, Object value) {
