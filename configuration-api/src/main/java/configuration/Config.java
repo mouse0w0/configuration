@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 public class Config {
 
     private final ConfigOptions options;
-    private final ConfigNode root;
+    private final ConfigNodeOld root;
 
     public Config() {
         this(new ConfigOptions());
@@ -13,7 +13,7 @@ public class Config {
 
     public Config(ConfigOptions options) {
         this.options = options;
-        this.root = new ConfigNode(options);
+        this.root = new ConfigNodeOld(options);
     }
 
     public Object get(String path) {

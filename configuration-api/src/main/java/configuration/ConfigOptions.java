@@ -1,18 +1,26 @@
 package configuration;
 
-import java.util.*;
+import configuration.objectmapping.ObjectMappingManager;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 public class ConfigOptions {
+
+    private final ObjectMappingManager objectMappingManager = new ObjectMappingManager();
 
     private char pathSeparator = '.';
     private char arrayLeft = '[';
     private char arrayRight = ']';
 
-    private String allowIdentifierChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-";
+    private Pattern keyValidator = Pattern.compile("[A-Za-z0-9_-]*");
 
-    private Supplier<Map<String, Object>> mapFactory = HashMap::new;
-    private Supplier<List<Object>> listFactory = LinkedList::new;
+    private Supplier<Map<String, ConfigNode>> mapFactory = HashMap::new;
+    private Supplier<List<ConfigNode>> listFactory = LinkedList::new;
 
     public char getPathSeparator() {
         return pathSeparator;
@@ -38,27 +46,39 @@ public class ConfigOptions {
         this.arrayRight = arrayRight;
     }
 
-    public String getAllowIdentifierChars() {
-        return allowIdentifierChars;
+    public Pattern getKeyValidator() {
+        return keyValidator;
     }
 
-    public void setAllowIdentifierChars(String allowIdentifierChars) {
-        this.allowIdentifierChars = allowIdentifierChars;
+    public void setKeyValidator(Pattern keyValidator) {
+        this.keyValidator = keyValidator;
     }
 
-    public Supplier<Map<String, Object>> getMapFactory() {
+    public Supplier<Map<String, ConfigNode>> getMapFactory() {
         return mapFactory;
     }
 
-    public void setMapFactory(Supplier<Map<String, Object>> mapFactory) {
+    public void setMapFactory(Supplier<Map<String, ConfigNode>> mapFactory) {
         this.mapFactory = mapFactory;
     }
 
-    public Supplier<List<Object>> getListFactory() {
+    public Supplier<List<ConfigNode>> getListFactory() {
         return listFactory;
     }
 
-    public void setListFactory(Supplier<List<Object>> listFactory) {
+    public void setListFactory(Supplier<List<ConfigNode>> listFactory) {
         this.listFactory = listFactory;
+    }
+
+    public ObjectMappingManager getObjectMappingManager() {
+        return objectMappingManager;
+    }
+
+    public <T> ConfigNode serialize(T value) {
+        return null;
+    }
+
+    public <T> T deserialize(ConfigNode node) {
+        return null;
     }
 }

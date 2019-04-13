@@ -2,6 +2,7 @@ package configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PathParser {
 
@@ -28,10 +29,10 @@ public class PathParser {
     }
 
     public static Key[] parse(String path, ConfigOptions options) {
-        return parse(path, options.getPathSeparator(), options.getArrayLeft(), options.getArrayRight(), options.getAllowIdentifierChars());
+        return parse(path, options.getPathSeparator(), options.getArrayLeft(), options.getArrayRight(), options.getKeyValidator());
     }
 
-    public static Key[] parse(String path, char pathSeparator, char arrayLeft, char arrayRight, String allowIdentifierChars) {
+    public static Key[] parse(String path, char pathSeparator, char arrayLeft, char arrayRight, Pattern keyValidator) {
         List<Key> keys = new ArrayList<>();
         List<Integer> indexs = new ArrayList<>();
         StringBuilder name = new StringBuilder();
@@ -40,6 +41,10 @@ public class PathParser {
 
         for (char c : path.toCharArray()) {
             if (c == pathSeparator) {
+                if (!keyValidator.matcher(name).matches()) {
+                    throw new InvalidPathException(path, c);
+                }
+
                 keys.add(new Key(name.toString(), indexs.stream().mapToInt(Integer::intValue).toArray()));
                 name = new StringBuilder();
                 indexs.clear();
@@ -59,9 +64,6 @@ public class PathParser {
                     }
                     index = index * 10 + c - '0';
                 } else {
-                    if (allowIdentifierChars.indexOf(c) == -1) {
-                        throw new InvalidPathException(path, c);
-                    }
                     name.append(c);
                 }
             }
