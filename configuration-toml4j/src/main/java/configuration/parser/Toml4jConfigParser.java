@@ -7,6 +7,11 @@ import java.io.OutputStream;
 
 public class Toml4jConfigParser implements ConfigParser {
     @Override
+    public String getName() {
+        return "toml";
+    }
+
+    @Override
     public String[] getSupportedFileTypes() {
         return new String[]{"toml"};
     }

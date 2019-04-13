@@ -11,16 +11,14 @@ import java.util.regex.Pattern;
 
 public class ConfigOptions {
 
-    private final ObjectMappingManager objectMappingManager = new ObjectMappingManager();
-
     private char pathSeparator = '.';
-    private char arrayLeft = '[';
-    private char arrayRight = ']';
 
     private Pattern keyValidator = Pattern.compile("[A-Za-z0-9_-]*");
 
-    private Supplier<Map<String, ConfigNode>> mapFactory = HashMap::new;
-    private Supplier<List<ConfigNode>> listFactory = LinkedList::new;
+    private Supplier<Map<String, Object>> mapFactory = HashMap::new;
+    private Supplier<List<Object>> listFactory = LinkedList::new;
+
+    private ObjectMappingManager objectMappingManager = ObjectMappingManager.DEFAULT;
 
     public char getPathSeparator() {
         return pathSeparator;
@@ -28,22 +26,6 @@ public class ConfigOptions {
 
     public void setPathSeparator(char pathSeparator) {
         this.pathSeparator = pathSeparator;
-    }
-
-    public char getArrayLeft() {
-        return arrayLeft;
-    }
-
-    public void setArrayLeft(char arrayLeft) {
-        this.arrayLeft = arrayLeft;
-    }
-
-    public char getArrayRight() {
-        return arrayRight;
-    }
-
-    public void setArrayRight(char arrayRight) {
-        this.arrayRight = arrayRight;
     }
 
     public Pattern getKeyValidator() {
@@ -54,19 +36,19 @@ public class ConfigOptions {
         this.keyValidator = keyValidator;
     }
 
-    public Supplier<Map<String, ConfigNode>> getMapFactory() {
+    public Supplier<Map<String, Object>> getMapFactory() {
         return mapFactory;
     }
 
-    public void setMapFactory(Supplier<Map<String, ConfigNode>> mapFactory) {
+    public void setMapFactory(Supplier<Map<String, Object>> mapFactory) {
         this.mapFactory = mapFactory;
     }
 
-    public Supplier<List<ConfigNode>> getListFactory() {
+    public Supplier<List<Object>> getListFactory() {
         return listFactory;
     }
 
-    public void setListFactory(Supplier<List<ConfigNode>> listFactory) {
+    public void setListFactory(Supplier<List<Object>> listFactory) {
         this.listFactory = listFactory;
     }
 
@@ -74,11 +56,15 @@ public class ConfigOptions {
         return objectMappingManager;
     }
 
-    public <T> ConfigNode serialize(T value) {
-        return null;
+    public void setObjectMappingManager(ObjectMappingManager objectMappingManager) {
+        this.objectMappingManager = objectMappingManager;
     }
 
-    public <T> T deserialize(ConfigNode node) {
-        return null;
+    public <T> Object serialize(T value) {
+        return objectMappingManager.serialize(this, value);
+    }
+
+    public <T> T deserialize(Class<T> type, Object raw) {
+        return objectMappingManager.deserialize(this, type, raw);
     }
 }

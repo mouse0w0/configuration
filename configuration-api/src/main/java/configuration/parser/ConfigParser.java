@@ -7,6 +7,8 @@ import java.io.OutputStream;
 
 public interface ConfigParser {
 
+    String getName();
+
     String[] getSupportedFileTypes();
 
     Config read(InputStream inputStream) throws ConfigParseException;

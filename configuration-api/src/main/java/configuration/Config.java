@@ -1,23 +1,40 @@
 package configuration;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class Config {
 
     private final ConfigOptions options;
-    private final ConfigNodeOld root;
+
+    private final Map<String, Object> root;
 
     public Config() {
         this(new ConfigOptions());
     }
 
     public Config(ConfigOptions options) {
+        this(options, options.getMapFactory().get());
+    }
+
+    protected Config(ConfigOptions options, Map<String, Object> root) {
         this.options = options;
-        this.root = new ConfigNodeOld(options);
+        this.root = root;
     }
 
     public Object get(String path) {
-        return root.get(path);
+        String[] keys = PathParser.parse(path, options);
+
+        Map<String, Object> map = root;
+        for (int i = 0; i < keys.length - 1; i++) {
+            Object child = map.get(keys[i]);
+            if (!(child instanceof Map))
+                return null;
+
+            map = (Map<String, Object>) child;
+        }
+
+        return map.get(keys[keys.length - 1]);
     }
 
     public Object get(String path, Object defaultValue) {
@@ -31,7 +48,27 @@ public class Config {
     }
 
     public Object set(String path, Object value) {
-        return root.set(path, value);
+        String[] keys = PathParser.parse(path, options);
+
+        Map<String, Object> map = root;
+        for (int i = 0; i < keys.length - 1; i++) {
+            Object child = map.get(keys[i]);
+            if (!(child instanceof Map)) {
+                if (value == null)
+                    return null;
+
+                child = options.getMapFactory().get();
+                map.put(keys[i], child);
+            }
+
+            map = (Map<String, Object>) child;
+        }
+
+        return value == null ? map.remove(keys[keys.length - 1]) : map.put(keys[keys.length - 1], value);
+    }
+
+    public boolean has(String path) {
+        return get(path) != null;
     }
 
     public ConfigOptions getOptions() {

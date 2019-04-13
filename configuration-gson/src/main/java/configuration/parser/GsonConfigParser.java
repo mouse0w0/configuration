@@ -7,6 +7,11 @@ import java.io.OutputStream;
 
 public class GsonConfigParser implements ConfigParser {
     @Override
+    public String getName() {
+        return "json";
+    }
+
+    @Override
     public String[] getSupportedFileTypes() {
         return new String[]{"json"};
     }
