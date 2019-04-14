@@ -1,5 +1,7 @@
 package configuration;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -64,7 +66,7 @@ public class Config {
     }
 
     public String getString(String path) {
-        return getString(path);
+        return get(path, String.class);
     }
 
     public String getString(String path, String defaultValue) {
@@ -134,6 +136,23 @@ public class Config {
     public List<Object> getList(String path, List<Object> defaultValue) {
         return get(path, List.class, defaultValue);
     }
+
+    public BigInteger getBigInteger(String path) {
+        return get(path, BigInteger.class);
+    }
+
+    public BigInteger getBigInteger(String path, BigInteger defaultValue) {
+        return get(path, BigInteger.class, defaultValue);
+    }
+
+    public BigDecimal getBigDecimal(String path) {
+        return get(path, BigDecimal.class);
+    }
+
+    public BigDecimal getBigDecimal(String path, BigDecimal defaultValue) {
+        return get(path, BigDecimal.class, defaultValue);
+    }
+
 
     public Config getConfig(String path) {
         Map<String, Object> map = getMap(path);

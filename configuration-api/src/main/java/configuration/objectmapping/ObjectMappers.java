@@ -13,7 +13,7 @@ public interface ObjectMappers {
         @Override
         public boolean canMap(Class type) {
             return type == Boolean.class
-                    || type == Number.class
+                    || Number.class.isAssignableFrom(type)
                     || type == Character.class;
         }
 
