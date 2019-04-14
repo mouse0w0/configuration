@@ -1,6 +1,7 @@
 package configuration.parser;
 
 import configuration.Config;
+import configuration.ConfigOptions;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -49,7 +50,7 @@ public final class ConfigParsers {
         return getParserByFileType(fileType) != null;
     }
 
-    public static Config load(File file) throws ConfigParseException {
+    public static Config load(File file, ConfigOptions options) throws ConfigParseException {
         String extensionName = getExtensionName(file);
         ConfigParser parser = getParserByFileType(extensionName);
         if (parser == null) {
@@ -57,14 +58,24 @@ public final class ConfigParsers {
         }
 
         try (InputStream inputStream = new FileInputStream(file)) {
-            return parser.read(inputStream);
-        } catch (IOException e) {
+            return parser.read(inputStream, options);
+        } catch (ConfigParseException e) {
+            throw e;
+        } catch (Exception e) {
             throw new ConfigParseException("Cannot load config cause by catch a exception.", e);
         }
     }
 
+    public static Config load(File file) throws ConfigParseException {
+        return load(file, new ConfigOptions());
+    }
+
+    public static Config load(Path path, ConfigOptions options) throws ConfigParseException {
+        return load(path.toFile(), options);
+    }
+
     public static Config load(Path path) throws ConfigParseException {
-        return load(path.toFile());
+        return load(path.toFile(), new ConfigOptions());
     }
 
     public static void save(File file, Config config) throws ConfigParseException {
@@ -88,7 +99,9 @@ public final class ConfigParsers {
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
             parser.write(outputStream, config);
-        } catch (IOException e) {
+        } catch (ConfigParseException e) {
+            throw e;
+        } catch (Exception e) {
             throw new ConfigParseException("Cannot save config cause by catch a exception.", e);
         }
     }

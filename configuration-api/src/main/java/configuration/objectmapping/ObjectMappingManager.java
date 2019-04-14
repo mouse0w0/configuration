@@ -40,7 +40,7 @@ public class ObjectMappingManager {
                     return o;
                 } catch (ObjectMappingException e) {
                     throw e;
-                } catch (RuntimeException e) {
+                } catch (Exception e) {
                     throw new ObjectMappingException("Catch a exception when serializing.", e);
                 }
             }
@@ -58,7 +58,7 @@ public class ObjectMappingManager {
                     return (T) mapper.deserialize(options, raw);
                 } catch (ObjectMappingException e) {
                     throw e;
-                } catch (RuntimeException e) {
+                } catch (Exception e) {
                     throw new ObjectMappingException("Catch a exception when deserializing.", e);
                 }
             }

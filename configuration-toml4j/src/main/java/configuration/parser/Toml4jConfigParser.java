@@ -1,6 +1,7 @@
 package configuration.parser;
 
 import configuration.Config;
+import configuration.ConfigOptions;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,7 +18,7 @@ public class Toml4jConfigParser implements ConfigParser {
     }
 
     @Override
-    public Config read(InputStream inputStream) throws ConfigParseException {
+    public Config read(InputStream inputStream, ConfigOptions options) throws Exception {
         return null;
     }
 
