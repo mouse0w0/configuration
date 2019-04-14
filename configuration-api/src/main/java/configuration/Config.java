@@ -1,5 +1,6 @@
 package configuration;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -17,9 +18,9 @@ public class Config {
         this(options, options.getMapFactory().get());
     }
 
-    protected Config(ConfigOptions options, Map<String, Object> root) {
+    public Config(ConfigOptions options, Map<String, Object> root) {
         this.options = options;
-        this.root = root;
+        this.root = (Map<String, Object>) options.serialize(root);
     }
 
     public Object get(String path) {
@@ -60,6 +61,83 @@ public class Config {
     public <T> T get(String path, Class<T> type, Supplier<T> defaultValue) {
         Object o = get(path);
         return o != null ? options.deserialize(type, o) : defaultValue.get();
+    }
+
+    public String getString(String path) {
+        return getString(path);
+    }
+
+    public String getString(String path, String defaultValue) {
+        return get(path, String.class, defaultValue);
+    }
+
+    public boolean getBoolean(String path) {
+        return getBoolean(path, false);
+    }
+
+    public boolean getBoolean(String path, boolean defaultValue) {
+        return get(path, Boolean.class, defaultValue);
+    }
+
+    public Number getNumber(String path) {
+        return getNumber(path, 0);
+    }
+
+    public Number getNumber(String path, Number defaultValue) {
+        return get(path, Number.class, defaultValue);
+    }
+
+    public int getInt(String path) {
+        return getInt(path, 0);
+    }
+
+    public int getInt(String path, int defaultValue) {
+        return get(path, Number.class, defaultValue).intValue();
+    }
+
+    public long getLong(String path) {
+        return getLong(path, 0L);
+    }
+
+    public long getLong(String path, long defaultValue) {
+        return get(path, Number.class, defaultValue).longValue();
+    }
+
+    public float getFloat(String path) {
+        return getFloat(path, 0F);
+    }
+
+    public float getFloat(String path, float defaultValue) {
+        return get(path, Number.class, defaultValue).floatValue();
+    }
+
+    public double getDouble(String path) {
+        return getDouble(path, 0D);
+    }
+
+    public double getDouble(String path, double defaultValue) {
+        return get(path, Number.class, defaultValue).doubleValue();
+    }
+
+    public Map<String, Object> getMap(String path) {
+        return get(path, Map.class);
+    }
+
+    public Map<String, Object> getMap(String path, Map<String, Object> defaultValue) {
+        return get(path, Map.class, defaultValue);
+    }
+
+    public List<Object> getList(String path) {
+        return get(path, List.class);
+    }
+
+    public List<Object> getList(String path, List<Object> defaultValue) {
+        return get(path, List.class, defaultValue);
+    }
+
+    public Config getConfig(String path) {
+        Map<String, Object> map = getMap(path);
+        return map == null ? null : new Config(options, map);
     }
 
     public Object set(String path, Object value) {

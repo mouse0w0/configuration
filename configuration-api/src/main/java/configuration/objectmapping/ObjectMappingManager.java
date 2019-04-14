@@ -70,13 +70,8 @@ public class ObjectMappingManager {
         return obj instanceof Map
                 || obj instanceof String
                 || obj instanceof Boolean
-                || obj instanceof Integer
-                || obj instanceof Long
-                || obj instanceof Double
-                || obj instanceof Float
+                || obj instanceof Number
                 || obj instanceof List
-                || obj instanceof Byte
-                || obj instanceof Short
                 || obj instanceof Character;
     }
 }

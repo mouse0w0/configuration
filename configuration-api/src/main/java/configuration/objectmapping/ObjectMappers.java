@@ -13,11 +13,7 @@ public interface ObjectMappers {
         @Override
         public boolean canMap(Class type) {
             return type == Boolean.class
-                    || type == Integer.class
-                    || type == Float.class
-                    || type == Double.class
-                    || type == Byte.class
-                    || type == Short.class
+                    || type == Number.class
                     || type == Character.class;
         }
 
