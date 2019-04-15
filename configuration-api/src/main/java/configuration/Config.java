@@ -22,7 +22,7 @@ public class Config {
 
     public Config(ConfigOptions options, Map<String, Object> root) {
         this.options = options;
-        this.root = (Map<String, Object>) options.serialize(root);
+        this.root = root;
     }
 
     public Object get(String path) {
