@@ -24,40 +24,20 @@ public class ConfigOptions {
         return pathSeparator;
     }
 
-    public void setPathSeparator(char pathSeparator) {
-        this.pathSeparator = pathSeparator;
-    }
-
     public Pattern getKeyValidator() {
         return keyValidator;
-    }
-
-    public void setKeyValidator(Pattern keyValidator) {
-        this.keyValidator = keyValidator;
     }
 
     public Supplier<Map<String, Object>> getMapFactory() {
         return mapFactory;
     }
 
-    public void setMapFactory(Supplier<Map<String, Object>> mapFactory) {
-        this.mapFactory = mapFactory;
-    }
-
     public Supplier<List<Object>> getListFactory() {
         return listFactory;
     }
 
-    public void setListFactory(Supplier<List<Object>> listFactory) {
-        this.listFactory = listFactory;
-    }
-
     public ObjectMappingManager getObjectMappingManager() {
         return objectMappingManager;
-    }
-
-    public void setObjectMappingManager(ObjectMappingManager objectMappingManager) {
-        this.objectMappingManager = objectMappingManager;
     }
 
     public <T> Object serialize(T value) {
@@ -66,5 +46,55 @@ public class ConfigOptions {
 
     public <T> T deserialize(Class<T> type, Object raw) {
         return objectMappingManager.deserialize(this, type, raw);
+    }
+
+    public static final class Builder {
+        private char pathSeparator = '.';
+        private Pattern keyValidator = Pattern.compile("[A-Za-z0-9_-]*");
+        private Supplier<Map<String, Object>> mapFactory = HashMap::new;
+        private Supplier<List<Object>> listFactory = LinkedList::new;
+        private ObjectMappingManager objectMappingManager = ObjectMappingManager.DEFAULT;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder pathSeparator(char pathSeparator) {
+            this.pathSeparator = pathSeparator;
+            return this;
+        }
+
+        public Builder keyValidator(Pattern keyValidator) {
+            this.keyValidator = keyValidator;
+            return this;
+        }
+
+        public Builder mapFactory(Supplier<Map<String, Object>> mapFactory) {
+            this.mapFactory = mapFactory;
+            return this;
+        }
+
+        public Builder listFactory(Supplier<List<Object>> listFactory) {
+            this.listFactory = listFactory;
+            return this;
+        }
+
+        public Builder objectMappingManager(ObjectMappingManager objectMappingManager) {
+            this.objectMappingManager = objectMappingManager;
+            return this;
+        }
+
+        public ConfigOptions build() {
+            ConfigOptions configOptions = new ConfigOptions();
+            configOptions.objectMappingManager = this.objectMappingManager;
+            configOptions.listFactory = this.listFactory;
+            configOptions.pathSeparator = this.pathSeparator;
+            configOptions.mapFactory = this.mapFactory;
+            configOptions.keyValidator = this.keyValidator;
+            return configOptions;
+        }
     }
 }

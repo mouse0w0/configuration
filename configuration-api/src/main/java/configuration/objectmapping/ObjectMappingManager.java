@@ -71,7 +71,6 @@ public class ObjectMappingManager {
                 || obj instanceof String
                 || obj instanceof Boolean
                 || obj instanceof Number
-                || obj instanceof List
-                || obj instanceof Character;
+                || obj instanceof List;
     }
 }

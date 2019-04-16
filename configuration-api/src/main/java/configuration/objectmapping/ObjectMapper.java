@@ -9,13 +9,13 @@ public interface ObjectMapper<T> {
     /**
      * @param options
      * @param value
-     * @return Must be primitive type's wrapper class (such as {@link Integer}, {@link Boolean}), {@link Number}, {@link String}, {@link java.util.Map}, {@link java.util.List}
+     * @return Must be {@link Number} and its sub-classes, {@link Boolean}, {@link String}, {@link java.util.Map}, {@link java.util.List}
      */
     Object serialize(ConfigOptions options, T value) throws Exception;
 
     /**
      * @param options
-     * @param raw     Must be primitive type's wrapper class (such as {@link Integer}, {@link Boolean}), {@link Number}, {@link String}, {@link java.util.Map}, {@link java.util.List}
+     * @param raw Must be {@link Number} and its sub-classes, {@link Boolean}, {@link String}, {@link java.util.Map}, {@link java.util.List}
      * @return
      */
     T deserialize(ConfigOptions options, Object raw) throws Exception;
