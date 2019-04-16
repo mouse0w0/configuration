@@ -10,7 +10,7 @@ public class Config {
 
     private final ConfigOptions options;
 
-    private final Map<String, Object> root;
+    private Map<String, Object> root;
 
     public Config() {
         this(new ConfigOptions());
@@ -28,16 +28,14 @@ public class Config {
     public Object get(String path) {
         String[] keys = PathParser.parse(path, options);
 
-        Map<String, Object> map = root;
-        for (int i = 0; i < keys.length - 1; i++) {
-            Object child = map.get(keys[i]);
-            if (!(child instanceof Map))
+        Object obj = root;
+        for (int i = 0; i < keys.length; i++) {
+            if (!(obj instanceof Map))
                 return null;
 
-            map = (Map<String, Object>) child;
+            obj = ((Map<String, Object>) obj).get(keys[i]);
         }
-
-        return map.get(keys[keys.length - 1]);
+        return obj;
     }
 
     public Object get(String path, Object defaultValue) {
