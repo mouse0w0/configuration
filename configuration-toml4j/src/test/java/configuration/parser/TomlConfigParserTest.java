@@ -9,28 +9,28 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GsonConfigParserTest {
+public class TomlConfigParserTest {
 
     @TempDir
     public static Path tempDir;
 
     @Test
     public void testLoadedParser() {
-        assertTrue(ConfigParsers.hasParser("json"));
+        assertTrue(ConfigParsers.hasParser("toml"));
     }
 
     @Test
-    public void testGsonParser() {
+    public void testTomlParser() {
         Config config = new Config();
         config.set("root.parent.child", "Hello Config");
         config.set("root.parent.number", 1);
         config.set("root.parent.boolean", true);
         config.set("root.parent.bigInteger", new BigInteger("10000000000000000000000000000000000000000000000000"));
 
-        System.out.println(tempDir.resolve("config.json").toAbsolutePath().toString());
-        ConfigParsers.save(tempDir.resolve("config.json"), config);
+        System.out.println(tempDir.resolve("config.toml").toAbsolutePath().toString());
+        ConfigParsers.save(tempDir.resolve("config.toml"), config);
 
-        config = ConfigParsers.load(tempDir.resolve("config.json"));
+        config = ConfigParsers.load(tempDir.resolve("config.toml"));
         assertEquals(config.getString("root.parent.child"), "Hello Config");
         assertEquals(config.getInt("root.parent.number"), 1);
         assertEquals(config.getString("root.parent.number"), "1");
