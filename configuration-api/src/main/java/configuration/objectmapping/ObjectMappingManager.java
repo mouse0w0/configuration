@@ -55,7 +55,7 @@ public class ObjectMappingManager {
         for (ObjectMapper mapper : mappers) {
             if (mapper.canMap(type)) {
                 try {
-                    return (T) mapper.deserialize(options, raw);
+                    return type.cast(mapper.deserialize(options, raw));
                 } catch (ObjectMappingException e) {
                     throw e;
                 } catch (Exception e) {
