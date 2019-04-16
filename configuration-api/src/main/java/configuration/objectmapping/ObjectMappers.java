@@ -24,7 +24,7 @@ public interface ObjectMappers {
 
         @Override
         public Object deserialize(ConfigOptions options, Object raw) {
-            return raw;
+            return raw instanceof String ? new BigDecimal((String) raw) : raw;
         }
     };
 
