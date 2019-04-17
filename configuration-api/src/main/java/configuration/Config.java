@@ -2,6 +2,7 @@ package configuration;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,7 @@ public class Config {
 
     private final ConfigOptions options;
 
-    private Map<String, Object> root;
+    protected Map<String, Object> root;
 
     public Config() {
         this(new ConfigOptions());
@@ -24,6 +25,14 @@ public class Config {
     public Config(ConfigOptions options, Map<String, Object> root) {
         this.options = options;
         this.root = root;
+    }
+
+    public Map<String, Object> getRoot() {
+        return root;
+    }
+
+    public ConfigOptions getOptions() {
+        return options;
     }
 
     public Object get(String path) {
@@ -185,11 +194,29 @@ public class Config {
         return root.keySet();
     }
 
-    public Map<String, Object> getMap() {
-        return root;
+    public Set<String> getKeys(boolean deep) {
+        return deep ? getKeysDeeply() : getKeys();
     }
 
-    public ConfigOptions getOptions() {
-        return options;
+    protected Set<String> getKeysDeeply() {
+        Set<String> keys = new HashSet<>();
+        root.entrySet().forEach(entry -> {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            keys.add(key);
+            if (value instanceof Map)
+                getKeysDeeply(keys, key, (Map<String, Object>) value);
+        });
+        return keys;
+    }
+
+    private void getKeysDeeply(Set<String> keys, String parent, Map<String, Object> map) {
+        map.entrySet().forEach(entry -> {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            keys.add(key);
+            if (value instanceof Map)
+                getKeysDeeply(keys, parent + "." + key, (Map<String, Object>) value);
+        });
     }
 }
