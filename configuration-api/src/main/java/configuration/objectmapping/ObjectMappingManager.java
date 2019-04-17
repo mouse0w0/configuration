@@ -14,10 +14,11 @@ public class ObjectMappingManager {
 
     static {
         List<ObjectMapper<?>> mappers = new LinkedList<>();
-        mappers.add(STRING_MAPPER);
         mappers.add(BIG_DECIMAL_MAPPER);
         mappers.add(BIG_INTEGER_MAPPER);
-        mappers.add(PRIMITIVE_MAPPER);
+        mappers.add(STRING_MAPPER);
+        mappers.add(NUMBER_MAPPER);
+        mappers.add(BOOLEAN_MAPPER);
         mappers.add(LIST_MAPPER);
         mappers.add(MAP_MAPPER);
         DEFAULT = new ObjectMappingManager(mappers);

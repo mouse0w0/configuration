@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class Config {
@@ -151,7 +152,6 @@ public class Config {
         return get(path, BigDecimal.class, defaultValue);
     }
 
-
     public Config getConfig(String path) {
         Map<String, Object> map = getMap(path);
         return map == null ? null : new Config(options, map);
@@ -179,6 +179,14 @@ public class Config {
 
     public boolean has(String path) {
         return get(path) != null;
+    }
+
+    public Set<String> getKeys() {
+        return root.keySet();
+    }
+
+    public Map<String, Object> getMap() {
+        return root;
     }
 
     public ConfigOptions getOptions() {

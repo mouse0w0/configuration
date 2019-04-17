@@ -9,22 +9,49 @@ import java.util.Map;
 
 public interface ObjectMappers {
 
-    ObjectMapper<?> PRIMITIVE_MAPPER = new ObjectMapper() {
+    ObjectMapper<Number> NUMBER_MAPPER = new ObjectMapper<Number>() {
         @Override
         public boolean canMap(Class type) {
-            return type == Boolean.class
-                    || Number.class.isAssignableFrom(type)
-                    || type == Character.class;
+            return Number.class.isAssignableFrom(type);
         }
 
         @Override
-        public Object serialize(ConfigOptions options, Object value) {
+        public Object serialize(ConfigOptions options, Number value) {
             return value;
         }
 
         @Override
-        public Object deserialize(ConfigOptions options, Object raw) {
-            return raw instanceof String ? new BigDecimal((String) raw) : raw;
+        public Number deserialize(ConfigOptions options, Object raw) {
+            if (raw instanceof String) {
+                return new BigDecimal((String) raw);
+            }
+            if (raw instanceof Number) {
+                return (Number) raw;
+            }
+            throw new ObjectMappingException(String.format("Cannot deserialize %s to Number.", raw.getClass()));
+        }
+    };
+
+    ObjectMapper<Boolean> BOOLEAN_MAPPER = new ObjectMapper<Boolean>() {
+        @Override
+        public boolean canMap(Class<?> type) {
+            return Boolean.class == type;
+        }
+
+        @Override
+        public Object serialize(ConfigOptions options, Boolean value) throws Exception {
+            return value;
+        }
+
+        @Override
+        public Boolean deserialize(ConfigOptions options, Object raw) throws Exception {
+            if (raw instanceof String) {
+                return Boolean.valueOf((String) raw);
+            }
+            if (Boolean.class == raw.getClass()) {
+                return (Boolean) raw;
+            }
+            throw new ObjectMappingException(String.format("Cannot deserialize %s to Boolean.", raw.getClass()));
         }
     };
 
@@ -79,41 +106,45 @@ public interface ObjectMappers {
         }
     };
 
-    ObjectMapper<List<?>> LIST_MAPPER = new ObjectMapper<List<?>>() {
+    ObjectMapper<List<Object>> LIST_MAPPER = new ObjectMapper<List<Object>>() {
         @Override
         public boolean canMap(Class type) {
             return List.class.isAssignableFrom(type);
         }
 
         @Override
-        public Object serialize(ConfigOptions options, List<?> value) {
+        public Object serialize(ConfigOptions options, List<Object> value) {
             List<Object> result = options.getListFactory().get();
             value.forEach(o -> result.add(options.serialize(o)));
             return result;
         }
 
         @Override
-        public List<?> deserialize(ConfigOptions options, Object raw) {
-            return (List<?>) raw;
+        public List<Object> deserialize(ConfigOptions options, Object raw) {
+            if (raw instanceof List)
+                return (List<Object>) raw;
+            return null;
         }
     };
 
-    ObjectMapper<Map<String, ?>> MAP_MAPPER = new ObjectMapper<Map<String, ?>>() {
+    ObjectMapper<Map<String, Object>> MAP_MAPPER = new ObjectMapper<Map<String, Object>>() {
         @Override
         public boolean canMap(Class<?> type) {
             return Map.class.isAssignableFrom(type);
         }
 
         @Override
-        public Object serialize(ConfigOptions options, Map<String, ?> value) {
+        public Object serialize(ConfigOptions options, Map<String, Object> value) {
             Map<String, Object> result = options.getMapFactory().get();
             value.entrySet().forEach(entry -> result.put(entry.getKey(), options.serialize(entry.getValue())));
             return result;
         }
 
         @Override
-        public Map<String, ?> deserialize(ConfigOptions options, Object raw) {
-            return (Map<String, ?>) raw;
+        public Map<String, Object> deserialize(ConfigOptions options, Object raw) {
+            if (raw instanceof Map)
+                return (Map<String, Object>) raw;
+            return null;
         }
     };
 }
