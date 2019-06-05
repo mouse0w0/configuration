@@ -40,7 +40,7 @@ Maven:
 <dependency>
     <groupId>com.github.Mouse0w0.Configuration</groupId>
     <artifactId>configuration-toml4j</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
