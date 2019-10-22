@@ -1,6 +1,7 @@
 package configuration.parser;
 
 import configuration.Config;
+import configuration.io.ConfigIOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -28,9 +29,9 @@ public class GsonConfigParserTest {
         config.set("root.parent.bigInteger", new BigInteger("10000000000000000000000000000000000000000000000000"));
 
         System.out.println(tempDir.resolve("config.json").toAbsolutePath().toString());
-        ConfigParsers.save(tempDir.resolve("config.json"), config);
+        config.save(tempDir.resolve("config.json"));
 
-        config = ConfigParsers.load(tempDir.resolve("config.json"));
+        config = ConfigIOUtils.load(tempDir.resolve("config.json"));
         assertEquals(config.getString("root.parent.child"), "Hello Config");
         assertEquals(config.getInt("root.parent.number"), 1);
         assertEquals(config.getString("root.parent.number"), "1");

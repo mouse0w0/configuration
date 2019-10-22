@@ -1,6 +1,7 @@
 package configuration.parser;
 
 import configuration.Config;
+import configuration.io.ConfigIOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -28,9 +29,9 @@ public class TomlConfigParserTest {
         config.set("root.parent.bigInteger", new BigInteger("10000000000000000000000000000000000000000000000000"));
 
         System.out.println(tempDir.resolve("config.toml").toAbsolutePath().toString());
-        ConfigParsers.save(tempDir.resolve("config.toml"), config);
+        config.save(tempDir.resolve("config.toml"));
 
-        config = ConfigParsers.load(tempDir.resolve("config.toml"));
+        config = ConfigIOUtils.load(tempDir.resolve("config.toml"));
         assertEquals(config.getString("root.parent.child"), "Hello Config");
         assertEquals(config.getInt("root.parent.number"), 1);
         assertEquals(config.getString("root.parent.number"), "1");
