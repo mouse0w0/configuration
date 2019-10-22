@@ -17,7 +17,7 @@ Maven:
 <dependency>
     <groupId>com.github.Mouse0w0.Configuration</groupId>
     <artifactId>configuration-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-     implementation 'com.github.Mouse0w0.Configuration:configuration-api:1.0.0'
+     implementation 'com.github.Mouse0w0.Configuration:configuration-api:1.1.0'
 }
 ```
 
@@ -40,14 +40,14 @@ Maven:
 <dependency>
     <groupId>com.github.Mouse0w0.Configuration</groupId>
     <artifactId>configuration-toml4j</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
 dependencies {
-    implementation 'com.github.Mouse0w0.Configuration:configuration-toml4j:1.0.0'
+    implementation 'com.github.Mouse0w0.Configuration:configuration-toml4j:1.1.0'
 }
 ```
 
