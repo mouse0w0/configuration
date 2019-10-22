@@ -175,7 +175,11 @@ public final class Config {
 
         if (keys.length == 0) {
             if (value instanceof Map) {
+                Map<String, Object> oldRoot = options.getMapFactory().get();
+                oldRoot.putAll(root);
+                root.clear();
                 root.putAll((Map<String, Object>) value);
+                return oldRoot;
             } else {
                 throw new IllegalArgumentException("Cannot set value to empty path");
             }
