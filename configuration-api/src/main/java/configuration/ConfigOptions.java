@@ -2,10 +2,7 @@ package configuration;
 
 import configuration.objectmapping.ObjectMappingManager;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -15,7 +12,7 @@ public class ConfigOptions {
 
     private Pattern keyValidator = Pattern.compile("[A-Za-z0-9_-]*");
 
-    private Supplier<Map<String, Object>> mapFactory = HashMap::new;
+    private Supplier<Map<String, Object>> mapFactory = LinkedHashMap::new;
     private Supplier<List<Object>> listFactory = LinkedList::new;
 
     private ObjectMappingManager objectMappingManager = ObjectMappingManager.DEFAULT;
