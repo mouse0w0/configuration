@@ -1,18 +1,22 @@
 package configuration;
 
+import configuration.io.ConfigIOUtils;
+
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class Config {
+public final class Config {
 
     private final ConfigOptions options;
 
-    protected Map<String, Object> root;
+    private Map<String, Object> root;
 
     public Config() {
         this(new ConfigOptions());
@@ -22,7 +26,7 @@ public class Config {
         this(options, options.getMapFactory().get());
     }
 
-    public Config(ConfigOptions options, Map<String, Object> root) {
+    private Config(ConfigOptions options, Map<String, Object> root) {
         this.options = options;
         this.root = root;
     }
@@ -169,6 +173,14 @@ public class Config {
     public Object set(String path, Object value) {
         String[] keys = PathParser.parse(path, options);
 
+        if (keys.length == 0) {
+            if (value instanceof Map) {
+                root.putAll((Map<String, Object>) value);
+            } else {
+                throw new IllegalArgumentException("Cannot set value to empty path");
+            }
+        }
+
         Map<String, Object> map = root;
         for (int i = 0; i < keys.length - 1; i++) {
             Object child = map.get(keys[i]);
@@ -214,5 +226,13 @@ public class Config {
             if (value instanceof Map)
                 getKeysDeeply(keys, parent + "." + key, (Map<String, Object>) value);
         });
+    }
+
+    public void save(Path path) {
+        ConfigIOUtils.save(path, this);
+    }
+
+    public void save(File file) {
+        ConfigIOUtils.save(file, this);
     }
 }

@@ -31,9 +31,10 @@ public class GsonConfigParser implements ConfigParser {
         try (InputStreamReader reader = new InputStreamReader(inputStream)) {
             jsonObject = gson.fromJson(reader, JsonObject.class);
         }
-        return new Config(options, toMap(jsonObject, options));
+        Config config = new Config(options);
+        config.set("", toMap(jsonObject, options));
+        return config;
     }
-
 
     private Map<String, Object> toMap(JsonObject object, ConfigOptions options) {
         Map<String, Object> map = options.getMapFactory().get();

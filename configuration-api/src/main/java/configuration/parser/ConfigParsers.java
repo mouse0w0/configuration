@@ -1,10 +1,5 @@
 package configuration.parser;
 
-import configuration.Config;
-import configuration.ConfigOptions;
-
-import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,71 +45,6 @@ public final class ConfigParsers {
         return getParserByFileType(fileType) != null;
     }
 
-    public static Config load(File file, ConfigOptions options) throws ConfigParseException {
-        String extensionName = getExtensionName(file);
-        ConfigParser parser = getParserByFileType(extensionName);
-        if (parser == null) {
-            throw new ConfigParseException(String.format("Not found parser for file extension %s.", extensionName));
-        }
-
-        try (InputStream inputStream = new FileInputStream(file)) {
-            return parser.read(inputStream, options);
-        } catch (ConfigParseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ConfigParseException("Cannot load config cause by catch a exception.", e);
-        }
-    }
-
-    public static Config load(File file) throws ConfigParseException {
-        return load(file, new ConfigOptions());
-    }
-
-    public static Config load(Path path, ConfigOptions options) throws ConfigParseException {
-        return load(path.toFile(), options);
-    }
-
-    public static Config load(Path path) throws ConfigParseException {
-        return load(path.toFile(), new ConfigOptions());
-    }
-
-    public static void save(File file, Config config) throws ConfigParseException {
-        String extensionName = getExtensionName(file);
-        ConfigParser parser = getParserByFileType(extensionName);
-        if (parser == null) {
-            throw new ConfigParseException(String.format("Not found parser for file extension %s.", extensionName));
-        }
-
-        if (!file.exists()) {
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new ConfigParseException("Cannot save config cause by catch a exception.", e);
-            }
-        }
-
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            parser.write(outputStream, config);
-        } catch (ConfigParseException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ConfigParseException("Cannot save config cause by catch a exception.", e);
-        }
-    }
-
-    public static void save(Path path, Config config) throws ConfigParseException {
-        save(path.toFile(), config);
-    }
-
-    private static String getExtensionName(File file) {
-        return file.getName().substring(file.getName().lastIndexOf('.') + 1);
-    }
-
     private ConfigParsers() {
     }
-
 }
