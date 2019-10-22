@@ -194,11 +194,7 @@ public class Config {
         return root.keySet();
     }
 
-    public Set<String> getKeys(boolean deep) {
-        return deep ? getKeysDeeply() : getKeys();
-    }
-
-    protected Set<String> getKeysDeeply() {
+    public Set<String> getKeysDeeply() {
         Set<String> keys = new HashSet<>();
         root.entrySet().forEach(entry -> {
             String key = entry.getKey();
