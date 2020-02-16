@@ -68,12 +68,16 @@ Object oldValue = config.set("parent.string", "Hello World");
 
 ### Load configuration file
 ```java
-Config config = ConfigParsers.load(new File("config.json"));
-// Config config = ConfigParsers.load(new File("config.toml"));
+Config config = ConfigIOUtils.load(new File("config.json"));
+// Config config = ConfigIOUtils.load(new File("config.toml"));
 ```
 
 ### Save configuration file
 ```java
-ConfigParsers.save(new File("config.json"), config);
-// ConfigParsers.save(new File("config.toml"), config);
+config.save(Paths.of("config.json"));
+// config.save(new File("config.toml"));
+//
+// Or call ConfigIoUtils.save(File, Config) and ConfigIoUtils.save(Path, Config)
+// ConfigIOUtils.save(Paths.of("config.json"), config);
+// ConfigIOUtils.save(new File("config.toml"), config);
 ```
