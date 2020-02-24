@@ -17,7 +17,7 @@ Maven:
 <dependency>
     <groupId>com.github.Mouse0w0.Configuration</groupId>
     <artifactId>configuration-api</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-     implementation 'com.github.Mouse0w0.Configuration:configuration-api:1.1.0'
+     implementation 'com.github.Mouse0w0.Configuration:configuration-api:1.2.0'
 }
 ```
 
@@ -40,14 +40,14 @@ Maven:
 <dependency>
     <groupId>com.github.Mouse0w0.Configuration</groupId>
     <artifactId>configuration-toml4j</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
 Gradle:
 ```groovy
 dependencies {
-    implementation 'com.github.Mouse0w0.Configuration:configuration-toml4j:1.1.0'
+    implementation 'com.github.Mouse0w0.Configuration:configuration-toml4j:1.2.0'
 }
 ```
 
@@ -68,12 +68,16 @@ Object oldValue = config.set("parent.string", "Hello World");
 
 ### Load configuration file
 ```java
-Config config = ConfigParsers.load(new File("config.json"));
-// Config config = ConfigParsers.load(new File("config.toml"));
+Config config = ConfigIOUtils.load(new File("config.json"));
+// Config config = ConfigIOUtils.load(new File("config.toml"));
 ```
 
 ### Save configuration file
 ```java
-ConfigParsers.save(new File("config.json"), config);
-// ConfigParsers.save(new File("config.toml"), config);
+config.save(Paths.of("config.json"));
+// config.save(new File("config.toml"));
+//
+// Or call ConfigIoUtils.save(File, Config) and ConfigIoUtils.save(Path, Config)
+// ConfigIOUtils.save(Paths.of("config.json"), config);
+// ConfigIOUtils.save(new File("config.toml"), config);
 ```
