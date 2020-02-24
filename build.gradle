@@ -1,11 +1,30 @@
-group 'configuration'
-version '1.2.0'
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: "maven-publish"
+
+    group 'configuration'
+    version '1.2.0'
 
     sourceCompatibility = targetCompatibility = 1.8
+
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/mouse0w0/configuration")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+                from(components.java)
+            }
+        }
+    }
 
     repositories {
         jcenter()
