@@ -19,6 +19,6 @@ jobs:
       run: ./gradlew build
     - name: Publish artifacts
       env:
-        USERNAME: ${{GITHUB_ACTOR}}
+        USERNAME: ${GITHUB_ACTOR}
         PASSWORD: ${{secrets.GITHUB_TOKEN}}
       run: ./gradlew publish
