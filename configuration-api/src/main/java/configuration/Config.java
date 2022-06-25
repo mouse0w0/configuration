@@ -184,7 +184,7 @@ public final class Config {
                 root.putAll(((Config) value).root);
                 return oldRoot;
             } else {
-                throw new IllegalArgumentException("Cannot set value to empty path");
+                throw new ConfigException("Cannot set value to empty path");
             }
         }
 
