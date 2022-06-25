@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unchecked")
 public final class Config {
 
     private final ConfigOptions options;
