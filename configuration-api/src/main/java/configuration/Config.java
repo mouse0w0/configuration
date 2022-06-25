@@ -15,8 +15,7 @@ import java.util.function.Supplier;
 public final class Config {
 
     private final ConfigOptions options;
-
-    private Map<String, Object> root;
+    private final Map<String, Object> root;
 
     public Config() {
         this(new ConfigOptions());
