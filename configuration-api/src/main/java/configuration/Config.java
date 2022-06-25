@@ -212,23 +212,22 @@ public final class Config {
 
     public Set<String> getKeysDeeply() {
         Set<String> keys = new HashSet<>();
-        root.entrySet().forEach(entry -> {
-            String key = entry.getKey();
-            Object value = entry.getValue();
+        root.forEach((key, value) -> {
             keys.add(key);
-            if (value instanceof Map)
+            if (value instanceof Map) {
                 getKeysDeeply(keys, key, (Map<String, Object>) value);
+            }
         });
         return keys;
     }
 
     private void getKeysDeeply(Set<String> keys, String parent, Map<String, Object> map) {
-        map.entrySet().forEach(entry -> {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            keys.add(key);
-            if (value instanceof Map)
-                getKeysDeeply(keys, parent + "." + key, (Map<String, Object>) value);
+        map.forEach((key, value) -> {
+            final String path = parent + "." + key;
+            keys.add(path);
+            if (value instanceof Map) {
+                getKeysDeeply(keys, path, (Map<String, Object>) value);
+            }
         });
     }
 
