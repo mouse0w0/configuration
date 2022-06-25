@@ -37,4 +37,8 @@ subprojects {
         testCompile 'org.junit-pioneer:junit-pioneer:0.3.0'
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.1'
     }
+
+    test {
+        useJUnitPlatform()
+    }
 }

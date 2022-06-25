@@ -26,21 +26,21 @@ public class TomlConfigParserTest {
         config.set("root.parent.child", "Hello Config");
         config.set("root.parent.number", 1);
         config.set("root.parent.boolean", true);
-        config.set("root.parent.bigInteger", new BigInteger("10000000000000000000000000000000000000000000000000"));
+        config.set("root.parent.bigInteger", new BigInteger("9223372036854775808"));
 
-        System.out.println(tempDir.resolve("config.toml").toAbsolutePath().toString());
+        System.out.println(tempDir.resolve("config.toml").toAbsolutePath());
         config.save(tempDir.resolve("config.toml"));
 
         config = ConfigIOUtils.load(tempDir.resolve("config.toml"));
-        assertEquals(config.getString("root.parent.child"), "Hello Config");
-        assertEquals(config.getInt("root.parent.number"), 1);
-        assertEquals(config.getString("root.parent.number"), "1");
+        assertEquals("Hello Config", config.getString("root.parent.child"));
+        assertEquals(1, config.getInt("root.parent.number"));
+        assertEquals("1", config.getString("root.parent.number"));
         assertTrue(config.getBoolean("root.parent.boolean"));
-        assertEquals(config.getBigInteger("root.parent.bigInteger"), new BigInteger("10000000000000000000000000000000000000000000000000"));
+        assertEquals(new BigInteger("9223372036854775808"), config.getBigInteger("root.parent.bigInteger"));
         assertTrue(config.has("root.parent"));
         assertNotNull(config.getMap("root.parent"));
         assertNotNull(config.getConfig("root.parent"));
         Config child = config.getConfig("root.parent");
-        assertEquals(child.getString("child"), "Hello Config");
+        assertEquals("Hello Config", child.getString("child"));
     }
 }

@@ -9,8 +9,8 @@ public class PathParserTest {
     @Test
     public void testPathParser() {
         String[] keys = PathParser.parse("root.parent.child", new ConfigOptions());
-        assertEquals(keys[0], "root");
-        assertEquals(keys[1], "parent");
-        assertEquals(keys[2], "child");
+        assertEquals("root", keys[0]);
+        assertEquals("parent", keys[1]);
+        assertEquals("child", keys[2]);
     }
 }
