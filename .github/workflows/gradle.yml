@@ -1,12 +1,8 @@
-name: Java CI
-
+name: Build and Test
 on: [push]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
@@ -17,8 +13,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Publish artifacts
-      env:
-        USERNAME: ${GITHUB_ACTOR}
-        PASSWORD: ${{secrets.GITHUB_TOKEN}}
-      run: ./gradlew publish
