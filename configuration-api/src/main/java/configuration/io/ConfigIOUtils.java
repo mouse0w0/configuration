@@ -1,8 +1,8 @@
 package configuration.io;
 
 import configuration.Config;
+import configuration.ConfigException;
 import configuration.ConfigOptions;
-import configuration.parser.ConfigParseException;
 import configuration.parser.ConfigParser;
 import configuration.parser.ConfigParsers;
 
@@ -14,43 +14,43 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class ConfigIOUtils {
-    public static Config load(File file) throws ConfigParseException, ConfigIOException {
+    public static Config load(File file) throws ConfigException {
         return load(file.toPath(), new ConfigOptions());
     }
 
-    public static Config load(File file, ConfigOptions options) throws ConfigParseException, ConfigIOException {
+    public static Config load(File file, ConfigOptions options) throws ConfigException {
         return load(file.toPath(), options);
     }
 
-    public static Config load(Path file) throws ConfigParseException, ConfigIOException {
+    public static Config load(Path file) throws ConfigException {
         return load(file, new ConfigOptions());
     }
 
-    public static Config load(Path file, ConfigOptions options) throws ConfigParseException, ConfigIOException {
+    public static Config load(Path file, ConfigOptions options) throws ConfigException {
         final String extension = getFileExtension(file);
         final ConfigParser parser = ConfigParsers.getParserByFileType(extension);
         if (parser == null) {
-            throw new ConfigParseException(String.format("Not found parser for file extension %s.", extension));
+            throw new ConfigException("Not found parser for extension " + extension);
         }
 
         try (InputStream inputStream = Files.newInputStream(file)) {
             return parser.read(inputStream, options);
-        } catch (ConfigParseException | ConfigIOException e) {
+        } catch (ConfigException e) {
             throw e;
         } catch (Exception e) {
-            throw new ConfigIOException("Cannot load config cause by occurring a exception.", e);
+            throw new ConfigException("Cannot load config cause by occurring an exception", e);
         }
     }
 
-    public static void save(File file, Config config) throws ConfigParseException, ConfigIOException {
+    public static void save(File file, Config config) throws ConfigException {
         save(file.toPath(), config);
     }
 
-    public static void save(Path file, Config config) throws ConfigParseException, ConfigIOException {
+    public static void save(Path file, Config config) throws ConfigException {
         final String extension = getFileExtension(file);
         final ConfigParser parser = ConfigParsers.getParserByFileType(extension);
         if (parser == null) {
-            throw new ConfigParseException(String.format("Not found parser for file extension %s.", extension));
+            throw new ConfigException("Not found parser for extension " + extension);
         }
 
         if (!Files.exists(file)) {
@@ -59,23 +59,23 @@ public final class ConfigIOUtils {
                 try {
                     Files.createDirectories(parent);
                 } catch (IOException e) {
-                    throw new ConfigIOException("cannot save config cause by cannot create parent.", e);
+                    throw new ConfigException("cannot save config cause by cannot create parent", e);
                 }
             }
 
             try {
                 Files.createFile(file);
             } catch (IOException e) {
-                throw new ConfigIOException("Cannot save config cause by cannot create file.", e);
+                throw new ConfigException("Cannot save config cause by cannot create file", e);
             }
         }
 
         try (OutputStream outputStream = Files.newOutputStream(file)) {
             parser.write(outputStream, config);
-        } catch (ConfigParseException | ConfigIOException e) {
+        } catch (ConfigException e) {
             throw e;
         } catch (Exception e) {
-            throw new ConfigIOException("Cannot save config cause by occurring a exception.", e);
+            throw new ConfigException("Cannot save config cause by occurring an exception", e);
         }
     }
 

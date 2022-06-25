@@ -22,7 +22,7 @@ public class PathParser {
         for (char c : path.toCharArray()) {
             if (c == pathSeparator) {
                 if (!keyValidator.matcher(key).matches()) {
-                    throw new InvalidPathException(path, c);
+                    throw new ConfigException("Invalid path \"" + path + "\", illegal character is '" + c + "'");
                 }
 
                 keys.add(key.toString());
