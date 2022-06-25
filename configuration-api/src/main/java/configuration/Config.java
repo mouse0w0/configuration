@@ -177,11 +177,11 @@ public final class Config {
         String[] keys = PathParser.parse(path, options);
 
         if (keys.length == 0) {
-            if (value instanceof Map) {
-                Map<String, Object> oldRoot = options.getMapFactory().get();
+            if (value instanceof Config) {
+                final Map<String, Object> oldRoot = options.getMapFactory().get();
                 oldRoot.putAll(root);
                 root.clear();
-                root.putAll((Map<String, Object>) value);
+                root.putAll(((Config) value).root);
                 return oldRoot;
             } else {
                 throw new IllegalArgumentException("Cannot set value to empty path");
@@ -204,7 +204,6 @@ public final class Config {
 
         return value == null ? map.remove(keys[keys.length - 1]) : map.put(keys[keys.length - 1], options.serialize(value));
     }
-
 
     public Set<String> getKeys() {
         return root.keySet();
