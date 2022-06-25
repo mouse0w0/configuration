@@ -11,7 +11,7 @@ import java.nio.file.Path;
 
 public class ConfigIOUtils {
 
-    public static Config load(File file, ConfigOptions options) throws ConfigParseException {
+    public static Config load(File file, ConfigOptions options) throws ConfigParseException, ConfigIOException {
         String extensionName = getExtensionName(file);
         ConfigParser parser = ConfigParsers.getParserByFileType(extensionName);
         if (parser == null) {
@@ -23,23 +23,23 @@ public class ConfigIOUtils {
         } catch (ConfigParseException e) {
             throw e;
         } catch (Exception e) {
-            throw new ConfigLoadException("Cannot load config cause by catch a exception.", e);
+            throw new ConfigIOException("Cannot load config cause by catch a exception.", e);
         }
     }
 
-    public static Config load(File file) throws ConfigParseException {
+    public static Config load(File file) throws ConfigParseException, ConfigIOException {
         return load(file, new ConfigOptions());
     }
 
-    public static Config load(Path path, ConfigOptions options) throws ConfigParseException {
+    public static Config load(Path path, ConfigOptions options) throws ConfigParseException, ConfigIOException {
         return load(path.toFile(), options);
     }
 
-    public static Config load(Path path) throws ConfigParseException {
+    public static Config load(Path path) throws ConfigParseException, ConfigIOException {
         return load(path.toFile(), new ConfigOptions());
     }
 
-    public static void save(File file, Config config) throws ConfigParseException {
+    public static void save(File file, Config config) throws ConfigParseException, ConfigIOException {
         String extensionName = getExtensionName(file);
         ConfigParser parser = ConfigParsers.getParserByFileType(extensionName);
         if (parser == null) {
@@ -54,7 +54,7 @@ public class ConfigIOUtils {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                throw new ConfigSaveException("Cannot save config cause by catch a exception.", e);
+                throw new ConfigIOException("Cannot save config cause by catch a exception.", e);
             }
         }
 
@@ -63,11 +63,11 @@ public class ConfigIOUtils {
         } catch (ConfigParseException e) {
             throw e;
         } catch (Exception e) {
-            throw new ConfigSaveException("Cannot save config cause by catch a exception.", e);
+            throw new ConfigIOException("Cannot save config cause by catch a exception.", e);
         }
     }
 
-    public static void save(Path path, Config config) throws ConfigParseException {
+    public static void save(Path path, Config config) throws ConfigParseException, ConfigIOException {
         save(path.toFile(), config);
     }
 
