@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unchecked")
 public final class Config {
-
     private final ConfigOptions options;
     private final Map<String, Object> root;
 
@@ -170,6 +169,10 @@ public final class Config {
         return map == null ? null : new Config(options, map);
     }
 
+    public boolean has(String path) {
+        return get(path) != null;
+    }
+
     public Object set(String path, Object value) {
         String[] keys = PathParser.parse(path, options);
 
@@ -202,9 +205,6 @@ public final class Config {
         return value == null ? map.remove(keys[keys.length - 1]) : map.put(keys[keys.length - 1], options.serialize(value));
     }
 
-    public boolean has(String path) {
-        return get(path) != null;
-    }
 
     public Set<String> getKeys() {
         return root.keySet();
