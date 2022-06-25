@@ -32,15 +32,13 @@ public class GsonConfigParser implements ConfigParser {
             jsonObject = gson.fromJson(reader, JsonObject.class);
         }
         Config config = new Config(options);
-        config.set("", toMap(jsonObject, options));
+        jsonObject.entrySet().forEach(entry -> config.set(entry.getKey(), toValue(entry.getValue(), options)));
         return config;
     }
 
     private Map<String, Object> toMap(JsonObject object, ConfigOptions options) {
         Map<String, Object> map = options.getMapFactory().get();
-        object.entrySet().forEach(entry -> {
-            map.put(entry.getKey(), toValue(entry.getValue(), options));
-        });
+        object.entrySet().forEach(entry -> map.put(entry.getKey(), toValue(entry.getValue(), options)));
         return map;
     }
 
@@ -72,7 +70,7 @@ public class GsonConfigParser implements ConfigParser {
     @Override
     public void write(OutputStream outputStream, Config config) throws Exception {
         try (OutputStreamWriter writer = new OutputStreamWriter(outputStream)) {
-            gson.toJson(fromMap(config.getMap(""), config.getOptions()), writer);
+            gson.toJson(fromMap(config.getRoot(), config.getOptions()), writer);
         }
     }
 

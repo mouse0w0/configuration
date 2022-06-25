@@ -7,6 +7,7 @@ import configuration.ConfigOptions;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 public class Toml4jConfigParser implements ConfigParser {
 
@@ -24,14 +25,14 @@ public class Toml4jConfigParser implements ConfigParser {
 
     @Override
     public Config read(InputStream inputStream, ConfigOptions options) throws Exception {
-        Toml toml = new Toml().read(inputStream);
+        Map<String, Object> map = new Toml().read(inputStream).toMap();
         Config config = new Config(options);
-        config.set("", options.serialize(toml.toMap()));
+        map.forEach(config::set);
         return config;
     }
 
     @Override
     public void write(OutputStream outputStream, Config config) throws Exception {
-        tomlWriter.write(config.get(""), outputStream);
+        tomlWriter.write(config.getRoot(), outputStream);
     }
 }
