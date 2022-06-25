@@ -17,7 +17,7 @@ public class GsonConfigParserTest {
 
     @Test
     public void testLoadedParser() {
-        assertTrue(ConfigParsers.hasParser("json"));
+        assertNotNull(ConfigParsers.getParser("json"));
     }
 
     @Test

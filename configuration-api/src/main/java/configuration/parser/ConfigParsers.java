@@ -37,14 +37,6 @@ public final class ConfigParsers {
         return null;
     }
 
-    public static boolean hasParser(String name) {
-        return getParser(name) != null;
-    }
-
-    public static boolean hasParserByFileType(String fileType) {
-        return getParserByFileType(fileType) != null;
-    }
-
     private ConfigParsers() {
     }
 }

@@ -17,7 +17,7 @@ public class TomlConfigParserTest {
 
     @Test
     public void testLoadedParser() {
-        assertTrue(ConfigParsers.hasParser("toml"));
+        assertNotNull(ConfigParsers.getParser("toml"));
     }
 
     @Test
